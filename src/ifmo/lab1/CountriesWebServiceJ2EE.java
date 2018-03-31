@@ -1,5 +1,7 @@
 package ifmo.lab1;
 
+import ifmo.lab3.exception.NotFoundException;
+
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
@@ -17,7 +19,7 @@ public class CountriesWebServiceJ2EE {
     private DataSource dataSource;
 
     @WebMethod(operationName = "getCountry")
-    public Country getCountry(String code) {
+    public Country getCountry(String code) throws NotFoundException {
         CountryDAO dao = new CountryDAO(getConnection());
         return dao.getCountry(code);
     }

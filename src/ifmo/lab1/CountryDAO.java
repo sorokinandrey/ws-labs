@@ -1,6 +1,8 @@
 package ifmo.lab1;
 
 
+import ifmo.lab3.exception.CountriesServiceFault;
+import ifmo.lab3.exception.NotFoundException;
 import lombok.val;
 
 import java.sql.Connection;
@@ -19,7 +21,7 @@ public class CountryDAO {
         this.connection = connection;
     }
 
-    public Country getCountry(String code) {
+    public Country getCountry(String code) throws NotFoundException {
         try (val conn = getConnection()) {
             val stmt = conn.createStatement();
             val query = "SELECT * FROM country WHERE code='" + code + "'";
@@ -30,7 +32,8 @@ public class CountryDAO {
         } catch (SQLException ex) {
             Logger.getLogger(CountryDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return null;
+        throw new NotFoundException("No country with code" + code,
+                new CountriesServiceFault("Conutry not found"));
     }
 
     public List<Country> getCountries(String term) {
