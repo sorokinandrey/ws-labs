@@ -19,7 +19,7 @@ public class CountryResource extends ifmo.lab4.CountryResource {
         return dao.addCountry(country);
     }
 
-    @PUT
+    @POST
     @Consumes("application/json")
     public ResponseCode updateCountry(Country country) {
         val dao = new CountryDAO(ConnectionUtil.getConnection());

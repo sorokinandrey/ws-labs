@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Lab4Client {
-    private final Client client;
+    protected final Client client;
 
-    private final String url;
+    protected final String url;
 
     public Lab4Client(final String url) {
         this.url = url;
