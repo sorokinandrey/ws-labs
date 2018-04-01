@@ -11,6 +11,7 @@ import ifmo.lab1.service.Country;
 import lombok.val;
 
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Lab4Client {
         client = Client.create(clientConfig);
     }
 
-    public Country getCountryByCode(String code) {
+    public Country getCountryByCode(String code) throws IOException {
         final WebResource resource = client.resource(url)
                 .queryParam("code", code);
 
@@ -37,13 +38,13 @@ public class Lab4Client {
         final val type = new GenericType<Country>() {};
 
         if (ClientResponse.Status.OK.getStatusCode() != response.getStatus()) {
-            throw new RuntimeException();
+            throw new IOException(response.getStatusInfo().toString());
         }
 
         return response.getEntity(type);
     }
 
-    public List<Country> searchCountry(String term) {
+    public List<Country> searchCountry(String term) throws IOException {
         final WebResource resource = client.resource(url + "/search")
                 .queryParam("term", term);
 
@@ -54,13 +55,13 @@ public class Lab4Client {
         final val type = new GenericType<List<Country>>() {};
 
         if (ClientResponse.Status.OK.getStatusCode() != response.getStatus()) {
-            throw new RuntimeException();
+            throw new IOException(response.getStatusInfo().toString());
         }
 
         return response.getEntity(type);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         val client = new Lab4Client("http://localhost:8080/rest/country");
         System.out.println(client.getCountryByCode("USA"));
         System.out.println(Arrays.toString(client.searchCountry("Germ").toArray()));

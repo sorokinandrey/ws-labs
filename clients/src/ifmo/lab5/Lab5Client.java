@@ -8,6 +8,7 @@ import lombok.val;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 public class Lab5Client extends Lab4Client{
 
@@ -15,23 +16,31 @@ public class Lab5Client extends Lab4Client{
         super(url);
     }
 
-    public void addCountry(Country country) {
+    public void addCountry(Country country) throws IOException {
         WebResource resource = client.resource(url);
 
-        resource
+        ClientResponse response =  resource
                 .type(MediaType.APPLICATION_JSON_TYPE)
-                .put(Entity.json(country));
+                .put(ClientResponse.class, Entity.json(country));
+
+        if (ClientResponse.Status.OK.getStatusCode() != response.getStatus()) {
+            throw new IOException(response.getEntity(String.class));
+        }
     }
 
-    public void updateCountry(Country country) {
+    public void updateCountry(Country country) throws IOException {
         WebResource resource = client.resource(url);
 
-        resource
+        ClientResponse response = resource
                 .type(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.json(country));
+                .post(ClientResponse.class, Entity.json(country));
+
+        if (ClientResponse.Status.OK.getStatusCode() != response.getStatus()) {
+            throw new IOException(response.getEntity(String.class));
+        }
     }
 
-    public void deleteCountry(String code) {
+    public void deleteCountry(String code) throws IOException {
         WebResource resource = client.resource(url)
                 .queryParam("code", code);
 
@@ -40,11 +49,11 @@ public class Lab5Client extends Lab4Client{
                 .delete(ClientResponse.class);
 
         if (ClientResponse.Status.OK.getStatusCode() != response.getStatus()) {
-            throw new RuntimeException();
+            throw new IOException(response.getEntity(String.class));
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         val client = new Lab5Client("http://localhost:8080/rest/country");
         val country = client.getCountryByCode("DEU");
         country.setName("TEST");
