@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "country")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 @Builder
 public class Country {

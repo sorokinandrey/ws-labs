@@ -19,5 +19,12 @@
     <orderEntry type="library" scope="PROVIDED" name="GlassFish 5.0.0" level="application_server_libraries" />
     <orderEntry type="library" name="org.projectlombok:lombok:1.16.16" level="project" />
     <orderEntry type="library" name="org.postgresql:postgresql:42.2.1" level="project" />
+    <orderEntry type="library" name="org.glassfish.grizzly:grizzly-http-server:2.4.31" level="project" />
+    <orderEntry type="library" name="org.glassfish.grizzly:grizzly-framework:2.4.31" level="project" />
+    <orderEntry type="library" name="org.glassfish.grizzly:grizzly-http:2.4.3" level="project" />
+    <orderEntry type="library" name="org.glassfish.jersey.containers:jersey-container-grizzly2-http:2.26" level="project" />
+    <orderEntry type="library" name="org.glassfish.jersey.core:jersey-server:2.26" level="project" />
+    <orderEntry type="library" name="com.sun.jersey:jersey-grizzly2:1.19.4" level="project" />
+    <orderEntry type="library" name="com.sun.jersey:jersey-json:1.19.4" level="project" />
   </component>
 </module>

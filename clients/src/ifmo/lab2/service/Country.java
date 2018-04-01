@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "country", propOrder = {
+@XmlType(propOrder = {
     "code",
     "continent",
     "governmentForm",

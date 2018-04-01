@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@XmlRootElement(name = "root")
+@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ResponseCode {
     private int code;
