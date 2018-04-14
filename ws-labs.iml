@@ -26,5 +26,6 @@
     <orderEntry type="library" name="org.glassfish.jersey.core:jersey-server:2.26" level="project" />
     <orderEntry type="library" name="com.sun.jersey:jersey-grizzly2:1.19.4" level="project" />
     <orderEntry type="library" name="com.sun.jersey:jersey-json:1.19.4" level="project" />
+    <orderEntry type="library" name="org.apache.juddi:juddi-client:3.3.5" level="project" />
   </component>
 </module>
