@@ -5,12 +5,16 @@ import com.sun.jersey.api.client.WebResource;
 import ifmo.lab1.service.Country;
 import ifmo.lab4.Lab4Client;
 import lombok.val;
+import sun.misc.BASE64Encoder;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
-public class Lab5Client extends Lab4Client{
+public class Lab5Client extends Lab4Client {
+
+    private static final String USERNAME = "hello";
+    private static final String PASS = "there";
 
     public Lab5Client(final String url) {
         super(url);
@@ -19,7 +23,8 @@ public class Lab5Client extends Lab4Client{
     public void addCountry(Country country) throws IOException {
         WebResource resource = client.resource(url);
 
-        ClientResponse response =  resource
+        ClientResponse response = resource
+                .header("Authorization", "Basic " + getAuthEnc())
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .put(ClientResponse.class, Entity.json(country));
 
@@ -32,6 +37,7 @@ public class Lab5Client extends Lab4Client{
         WebResource resource = client.resource(url);
 
         ClientResponse response = resource
+                .header("Authorization", "Basic " + getAuthEnc())
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .post(ClientResponse.class, Entity.json(country));
 
@@ -45,6 +51,7 @@ public class Lab5Client extends Lab4Client{
                 .queryParam("code", code);
 
         ClientResponse response = resource
+                .header("Authorization", "Basic " + getAuthEnc())
                 .accept(MediaType.APPLICATION_JSON_TYPE)
                 .delete(ClientResponse.class);
 
@@ -61,5 +68,10 @@ public class Lab5Client extends Lab4Client{
         country.setCode("NEW");
         client.addCountry(country);
         client.deleteCountry("NEW");
+    }
+
+    private String getAuthEnc() {
+        String authString = USERNAME + ":" + PASS;
+        return new BASE64Encoder().encode(authString.getBytes());
     }
 }

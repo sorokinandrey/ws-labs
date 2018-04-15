@@ -10,13 +10,19 @@ import lombok.val;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Base64;
 
 @Path("/country")
 @Produces({MediaType.APPLICATION_JSON})
 public class CountryResource extends ifmo.lab4.CountryResource {
+
+    private static final String USERNAME = "hello";
+    private static final String PASS = "there";
+
     @PUT
     @Consumes("application/json")
-    public String addCountry(Country country) throws CountryServiceException {
+    public String addCountry(@HeaderParam("authorization") String authString, Country country) throws CountryServiceException {
+        checkAuth(authString);
         checkCountry(country);
         val dao = new CountryDAO(ConnectionUtil.getConnection());
         try {
@@ -28,7 +34,8 @@ public class CountryResource extends ifmo.lab4.CountryResource {
 
     @POST
     @Consumes("application/json")
-    public ResponseCode updateCountry(Country country) throws CountryServiceException {
+    public ResponseCode updateCountry(@HeaderParam("authorization") String authString, Country country) throws CountryServiceException {
+        checkAuth(authString);
         checkCountry(country);
         val dao = new CountryDAO(ConnectionUtil.getConnection());
         try {
@@ -39,7 +46,8 @@ public class CountryResource extends ifmo.lab4.CountryResource {
     }
 
     @DELETE
-    public ResponseCode deleteCountry(@QueryParam("code") String code) throws CountryServiceException {
+    public ResponseCode deleteCountry(@HeaderParam("authorization") String authString, @QueryParam("code") String code) throws CountryServiceException {
+        checkAuth(authString);
         if (code == null || code.equals("")) {
             throw new CountryServiceException("Empty code");
         }
@@ -50,6 +58,19 @@ public class CountryResource extends ifmo.lab4.CountryResource {
             throw new CountryServiceException("Country not found");
         }
     }
+
+    private void checkAuth(String authStr) throws CountryServiceException {
+        val authParts = authStr.split(" ");
+        if (authParts.length > 1) {
+            val decodedAuth = new String(Base64.getDecoder().decode(authParts[1]));
+            val loginPass = decodedAuth.split(":");
+            if (USERNAME.equals(loginPass[0]) && PASS.equals(loginPass[1])) {
+                return;
+            }
+        }
+        throw new CountryServiceException("Restricted access.");
+    }
+
     private void checkCountry(Country country) throws CountryServiceException {
         if (country == null) {
             throw new CountryServiceException("null country");
